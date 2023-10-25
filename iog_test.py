@@ -128,9 +128,17 @@ def getObjectAccount():
         variables = {'input': accountNumber}
         headers = {"Authorization": authToken}
         r = requests.post(url, json={'query': query, 'variables': variables, 'operationName': 'getData'}, headers=headers)
-        formatted_json = json.loads(r.text)['data']
-        print_json(formatted_json)
-        return formatted_json
+
+        if r.text.find('"registeredKrakenflexDevice":null') > -1:
+            raise SystemExit("Error fetching device data - check account number")
+        else:
+            formatted_json = json.loads(r.text)['data']
+            if formatted_json['registeredKrakenflexDevice']['krakenflexDeviceId'] is None:
+                raise SystemExit("No KrakenflexDevice found - account not on IOG tariff?")
+            print_json(formatted_json)
+            return formatted_json
+
+
     except HTTPError as http_err:
         print(f'HTTP Error {http_err}')
     except Exception as err:
