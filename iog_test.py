@@ -37,7 +37,11 @@ def refreshToken(apiKey, accountNumber):
         print(f'Another error occurred: {err}')
 
     jsonResponse = json.loads(r.text)
-    return jsonResponse['data']['obtainKrakenToken']['token']
+
+    if r.text.find("Authentication failed.") > -1:
+        raise SystemExit("Authentication failed - check API key")
+    else:
+        return jsonResponse['data']['obtainKrakenToken']['token']
 
 def print_json(json_data):
     for key, value in json_data.items():
