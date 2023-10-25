@@ -17,8 +17,8 @@ def validate_input(prompt, pattern):
         else:
             print("Invalid input. Please try again.")
 
-apikey = validate_input("Enter your API key: ", APIKeyPattern)
-accountNumber = validate_input("Enter your account number: ", accountNumberPattern)
+accountNumber = validate_input("Enter account number: ", accountNumberPattern)
+apikey = validate_input("Enter API key: ", APIKeyPattern)
 
 def refreshToken(apiKey, accountNumber):
     try:
